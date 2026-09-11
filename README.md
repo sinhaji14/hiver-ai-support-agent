@@ -12,7 +12,6 @@ This project builds an end-to-end AI support agent using the **Kaggle Customer S
 
 For every incoming customer message, the system performs four stages:
 
-```text
                     Customer Message
                            │
                            ▼
