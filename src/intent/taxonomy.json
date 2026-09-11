@@ -1,0 +1,52 @@
+[
+  {
+    "intent_id": "delivery_delay_tracking",
+    "intent_name": "Delivery Delay & Tracking",
+    "description": "Issues involving delayed shipments, missed delivery dates, unreliable delivery estimates, or inaccurate tracking information."
+  },
+  {
+    "intent_id": "missing_misdelivered_package",
+    "intent_name": "Missing, Misdelivered & Lost Package",
+    "description": "Packages that are missing, lost, misdelivered, or incorrectly marked as delivered."
+  },
+  {
+    "intent_id": "damaged_defective_incorrect_item",
+    "intent_name": "Damaged, Defective & Incorrect Item",
+    "description": "Customers reporting damaged, broken, defective, counterfeit, poor-quality, or incorrect products."
+  },
+  {
+    "intent_id": "returns_refunds_replacements",
+    "intent_name": "Returns, Refunds & Replacements",
+    "description": "Requests or problems involving returns, return pickups, refunds, replacements, or delayed refund processing."
+  },
+  {
+    "intent_id": "billing_payment_charges",
+    "intent_name": "Billing, Payment & Unauthorized Charges",
+    "description": "Payment failures, billing errors, unexpected charges, overcharging, unauthorized charges, or invoice issues."
+  },
+  {
+    "intent_id": "pricing_promotions_cashback",
+    "intent_name": "Pricing, Promotions & Cashback",
+    "description": "Questions or disputes involving prices, discounts, promotional codes, promotional credits, or cashback."
+  },
+  {
+    "intent_id": "account_access_security",
+    "intent_name": "Account Access & Security",
+    "description": "Login, account access, verification, lockout, suspicious activity, fraud, phishing, or account-security problems."
+  },
+  {
+    "intent_id": "technical_digital_services",
+    "intent_name": "Technical & Digital Services",
+    "description": "Problems with the website, mobile app, Fire TV, Prime Video, digital content, or other technical functionality."
+  },
+  {
+    "intent_id": "order_subscription_preorder",
+    "intent_name": "Order, Subscription & Pre-order Issues",
+    "description": "Order cancellations, subscription management, pre-order fulfillment, out-of-stock issues, and related order-management problems."
+  },
+  {
+    "intent_id": "customer_support_general",
+    "intent_name": "Customer Support & General Inquiry",
+    "description": "Unresponsive or ineffective customer support, unresolved escalations, communication problems, and general support questions."
+  }
+]
