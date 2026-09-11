@@ -1,6 +1,3 @@
-Yes. I recommend replacing the README with **one clean, polished Markdown document** rather than continuing to patch the current one. I reviewed the version you uploaded and will preserve the actual results while fixing the formatting and presentation issues.
-
-Below is the **complete `README.md`**. Copy everything inside this single block and replace your current README.
 
 ````markdown
 # Hiver AI Support Agent
