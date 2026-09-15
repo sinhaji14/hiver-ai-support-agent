@@ -8,8 +8,6 @@ The system is designed as a **conservative, retrieval-grounded support agent**: 
 ## 1. Overview
 
 For an incoming customer message, the pipeline performs:
-
-```mermaid
 flowchart LR
     A[Customer Message] --> B[Intent Classification]
     B --> C[Historical Retrieval]
