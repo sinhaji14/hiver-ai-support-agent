@@ -1,4 +1,3 @@
-````markdown
 # Hiver AI Support Agent — Evaluation Report
 
 ## 1. Problem Framing
@@ -787,5 +786,4 @@ The central trade-off is clear:
 
 The next highest-value improvements are a larger and better-balanced evaluation set, explicit handling of non-issue messages, calibrated escalation thresholds, stronger retrieval/reranking, and more specific evidence-backed generation.
 
-````
 
