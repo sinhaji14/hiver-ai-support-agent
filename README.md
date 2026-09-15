@@ -13,25 +13,52 @@ The primary design goal is **safe automation rather than maximum automation cove
 
 For every incoming customer message, the system follows a retrieval-grounded support pipeline:
 
-![Hiver AI Support Agent Pipeline](docs/hiver_ai_support_agent_pipeline.png)
+### AI Support Pipeline
 
-### Pipeline Stages
+| Step | Component | What it does |
+|:---:|---|---|
+| **1** | 💬 **Customer Message** | Receives the incoming customer support request |
+| **↓** | | |
+| **2** | 🧠 **Intent Classification** | Identifies the customer's primary support intent |
+| **↓** | | |
+| **3** | 🔎 **Historical Retrieval** | Finds semantically similar historical customer-support interactions |
+| **↓** | | |
+| **4** | 🛡️ **Escalation Decision** | Determines whether the request is safe to automate |
+| ↙ | **HUMAN** | High-risk, ambiguous, or weak-evidence cases are escalated |
+| ↓ | **AUTO-HANDLE** | Only sufficiently supported cases continue automatically |
+| **5** | ✍️ **Response Generation** | Generates a concise response using historical support evidence |
+| **↓** | | |
+| **6** | 🔐 **Safety Checks** | Removes sensitive information and checks for unsupported content |
+| **↓** | | |
+| **7** | ✅ **Final Response** | Returns the safe response to the customer |
 
-| Stage | Purpose |
-|---|---|
-| **Customer Message** | Receive the incoming customer support request |
-| **Intent Classification** | Identify the customer's primary support intent |
-| **Historical Retrieval** | Find semantically similar historical customer-support interactions |
-| **Escalation Decision** | Decide whether the case can be safely automated or requires human review |
-| **Response Generation** | Generate a concise response grounded in historical support evidence |
-| **Safety Checks** | Check for sensitive information and unsupported content |
-| **Final Response** | Return the safe response or route the case to a human agent |
+### Decision Flow
 
-### Core Design Principle
-
-> **Safe automation over maximum automation coverage.**
-
-When evidence is weak, the intent is ambiguous, or the request is high-risk, the system prefers **human escalation** over generating an unsupported response.
+```text
+Customer Message
+       │
+       ▼
+Intent Classification
+       │
+       ▼
+Historical Retrieval
+       │
+       ▼
+Escalation Decision
+       │
+       ├─────────────── HUMAN ──────────────► Human Agent
+       │
+       ▼
+   AUTO-HANDLE
+       │
+       ▼
+Response Generation
+       │
+       ▼
+Safety Checks
+       │
+       ▼
+Final Response
 
 ### Pipeline stages
 
