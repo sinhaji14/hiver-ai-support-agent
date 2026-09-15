@@ -1,22 +1,67 @@
-````markdown
-# Hiver AI Support Agent
-
-An AI customer-support agent for **AmazonHelp** that classifies customer issues, retrieves relevant historical support interactions, generates grounded responses, and decides when a human should take over.
-
-The system is designed as a **conservative, retrieval-grounded support agent**: when evidence is weak, the intent is ambiguous, or the issue is high-risk, it prefers human escalation over unsupported automation.
-
 ## 1. Overview
 
-For an incoming customer message, the pipeline performs:
+For an incoming customer message, the pipeline follows the workflow below:
+
+```mermaid
 flowchart LR
     A[Customer Message] --> B[Intent Classification]
     B --> C[Historical Retrieval]
     C --> D[Escalation Decision]
+
     D -->|AUTO-HANDLE| E[Response Generation]
     E --> F[Safety Checks]
     F --> G[Final Response]
+
     D -->|HUMAN| H[Human Agent]
-````
+Pipeline Stages
+Customer Message — receives the incoming support request.
+Intent Classification — identifies the customer's primary support issue.
+Historical Retrieval — retrieves relevant historical customer-support interactions.
+Escalation Decision — determines whether the request can be safely automated or should be handled by a human.
+Response Generation — generates a concise response grounded in historical support evidence.
+Safety Checks — checks the generated response for sensitive information and unsupported content.
+Final Response — returns the safe response to the customer or routes the case to a human agent.
+
+### Even better for your README
+
+I would use this slightly more polished version:
+
+```markdown
+## 1. Overview
+
+For each incoming customer message, the system follows a retrieval-grounded support pipeline:
+
+```mermaid
+flowchart LR
+    A["Customer Message"] --> B["Intent Classification"]
+    B --> C["Historical Retrieval"]
+    C --> D["Escalation Decision"]
+
+    D -->|"AUTO-HANDLE"| E["Response Generation"]
+    E --> F["Safety Checks"]
+    F --> G["Final Response"]
+
+    D -->|"HUMAN"| H["Human Agent"]
+
+    style A fill:#1e3a5f,stroke:#60a5fa,color:#fff
+    style B fill:#312e81,stroke:#818cf8,color:#fff
+    style C fill:#064e3b,stroke:#34d399,color:#fff
+    style D fill:#78350f,stroke:#f59e0b,color:#fff
+    style E fill:#312e81,stroke:#818cf8,color:#fff
+    style F fill:#164e63,stroke:#22d3ee,color:#fff
+    style G fill:#064e3b,stroke:#34d399,color:#fff
+    style H fill:#7f1d1d,stroke:#f87171,color:#fff
+Pipeline Stages
+Stage	Purpose
+Customer Message	Receive the incoming support request
+Intent Classification	Identify the customer's primary support intent
+Historical Retrieval	Find semantically similar historical support interactions
+Escalation Decision	Decide between safe automation and human review
+Response Generation	Generate a concise, evidence-grounded response
+Safety Checks	Remove sensitive information and prevent unsafe output
+Final Response	Return the response or route the case to a human
+
+The key design principle is safe automation over maximum automation coverage. Cases with weak evidence, ambiguous intent, or high-risk requirements are escalated to a human agent.
 
 ### Pipeline
 
