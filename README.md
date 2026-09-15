@@ -1,4 +1,3 @@
-Absolutely. Below is a **complete updated `README.md`** you can copy-paste directly. It incorporates the current evaluation results, independent human evaluation, LLM-judge agreement, limitations, failure analysis, reproducibility commands, and the Hiver deliverables.
 
 ````markdown
 # Hiver AI Support Agent
