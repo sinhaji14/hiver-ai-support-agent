@@ -9,22 +9,29 @@ The primary design goal is **safe automation rather than maximum automation cove
 
 ---
 
-## Overview
+## 1. Overview
 
-For every incoming customer message, the system follows this pipeline:
+For every incoming customer message, the system follows a retrieval-grounded support pipeline:
 
-```mermaid
-flowchart TD
-    A["Customer Message"] --> B["Intent Classification"]
-    B --> C["Historical Retrieval"]
-    C --> D["Escalation Decision"]
+![Hiver AI Support Agent Pipeline](docs/hiver_ai_support_agent_pipeline.png)
 
-    D -->|"AUTO-HANDLE"| E["Response Generation"]
-    E --> F["Safety Checks"]
-    F --> G["Final Response"]
+### Pipeline Stages
 
-    D -->|"HUMAN"| H["Human Agent"]
-````
+| Stage | Purpose |
+|---|---|
+| **Customer Message** | Receive the incoming customer support request |
+| **Intent Classification** | Identify the customer's primary support intent |
+| **Historical Retrieval** | Find semantically similar historical customer-support interactions |
+| **Escalation Decision** | Decide whether the case can be safely automated or requires human review |
+| **Response Generation** | Generate a concise response grounded in historical support evidence |
+| **Safety Checks** | Check for sensitive information and unsupported content |
+| **Final Response** | Return the safe response or route the case to a human agent |
+
+### Core Design Principle
+
+> **Safe automation over maximum automation coverage.**
+
+When evidence is weak, the intent is ambiguous, or the request is high-risk, the system prefers **human escalation** over generating an unsupported response.
 
 ### Pipeline stages
 
