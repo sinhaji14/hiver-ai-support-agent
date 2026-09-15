@@ -1256,6 +1256,3 @@ Human Judge Validation
 The central trade-off is clear:
 
 > **The system currently prioritizes safe, evidence-backed support over maximum automation coverage.**
-
-```
-```
