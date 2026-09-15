@@ -1,7 +1,3 @@
-Absolutely. Below is the **fully updated `REPORT.md`**, replacing the outdated generation-evaluation section with the final **20-example LLM judge + independent human agreement results**. I’ve also tightened the framing, limitations, failure analysis, and “misleading headline number” section.
-
-Copy the entire block into `REPORT.md`.
-
 ````markdown
 # Hiver AI Support Agent — Evaluation Report
 
