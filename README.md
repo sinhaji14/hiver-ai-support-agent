@@ -48,7 +48,7 @@ Cases with weak retrieval evidence, ambiguous intent, or high-risk requirements 
 
 ---
 
-# 1. Problem Framing
+# 1. Problem 
 
 The goal is to build a customer-support agent that can handle common support requests while minimizing unsafe or unsupported responses.
 
