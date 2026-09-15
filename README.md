@@ -5,10 +5,6 @@ An AI customer-support agent for **AmazonHelp** that classifies customer issues,
 
 The system is designed as a **conservative, retrieval-grounded support agent**: when evidence is weak, the intent is ambiguous, or the issue is high-risk, it prefers human escalation over unsupported automation.
 
-![Hiver AI Support Agent Pipeline](docs/hiver_ai_support_agent_pipeline.png)
-
----
-
 ## 1. Overview
 
 For an incoming customer message, the pipeline performs:
