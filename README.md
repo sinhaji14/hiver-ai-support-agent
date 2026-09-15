@@ -1,4 +1,4 @@
-
+````markdown
 # Hiver AI Support Agent
 
 > **A conservative, retrieval-grounded AI customer-support agent for AmazonHelp.**
@@ -11,11 +11,11 @@ The primary design goal is:
 
 ---
 
-## 1. Overview
+# 1. Overview
 
 For every incoming customer message, the system follows a retrieval-grounded support pipeline.
 
-### AI Support Pipeline
+## AI Support Pipeline
 
 | Step | Component | Purpose |
 |:---:|---|---|
@@ -34,7 +34,7 @@ For every incoming customer message, the system follows a retrieval-grounded sup
 | **↓** | | |
 | **7** | ✅ **Final Response** | Returns the safe response to the customer |
 
-### Decision Flow
+## Decision Flow
 
 ```text
                          Customer Message
@@ -59,7 +59,7 @@ For every incoming customer message, the system follows a retrieval-grounded sup
                                   Final Response
 ````
 
-### Core design principle
+## Core Design Principle
 
 The system deliberately prefers **safe human escalation** when:
 
@@ -76,7 +76,7 @@ This makes the system conservative by design rather than optimizing only for aut
 
 The goal is to build an AI support agent that can handle common customer requests while minimizing unsupported or unsafe responses.
 
-## What good means
+## What Good Means
 
 A good support agent should:
 
@@ -88,7 +88,9 @@ A good support agent should:
 * recognize when evidence is insufficient
 * escalate risky or ambiguous cases to a human
 
-## What this prototype does
+## What This Prototype Does
+
+The system:
 
 * classifies customer messages into 10 support intents
 * retrieves semantically similar AmazonHelp interactions
@@ -98,7 +100,7 @@ A good support agent should:
 * makes a conservative human-vs-automation decision
 * evaluates intent classification, retrieval, escalation, generation, and judge agreement
 
-## What this prototype does not do
+## What This Prototype Does Not Do
 
 This is a research/prototype system, not a production customer-support integration.
 
@@ -124,7 +126,7 @@ The dataset contains customer tweets, support-agent responses, and conversation 
 
 For this project, **AmazonHelp** was selected because it had the largest support-response volume among the evaluated brands.
 
-## Dataset statistics
+## Dataset Statistics
 
 | Metric                              |       Value |
 | ----------------------------------- | ----------: |
@@ -171,11 +173,11 @@ The golden set is stored in:
 data/golden/golden_set.jsonl
 ```
 
-## Intent annotation
+## Intent Annotation
 
 The primary intent was selected based on the customer's main support need, using the historical support response as additional context.
 
-## Escalation annotation
+## Escalation Annotation
 
 ### AUTO-HANDLE
 
@@ -212,7 +214,7 @@ The escalation labels represent a **designed safety policy**, not objective grou
 
 The distribution is important when interpreting headline accuracy because the two largest intents contain **108/200 examples (54%)**.
 
-## Escalation distribution
+## Escalation Distribution
 
 | Decision    | Examples |
 | ----------- | -------: |
@@ -261,7 +263,7 @@ The supervised comparisons use **5-fold stratified cross-validation** where appl
 | Multi-prototype embeddings                         | **49.0%** |     0.376 |       0.478 |
 | **Hybrid: multi-prototype + taxonomy description** | **51.5%** | **0.425** |   **0.515** |
 
-## Final approach
+## Final Approach
 
 The production classifier combines:
 
@@ -275,9 +277,10 @@ Implementation:
 ```text
 src/intent/multi_prototype.py
 src/intent/hybrid.py
+src/intent/hybrid_classifier.py
 ```
 
-## Why multiple prototypes?
+## Why Multiple Prototypes?
 
 A single embedding prototype can fail to capture the linguistic diversity within an intent.
 
@@ -295,7 +298,7 @@ For example, delivery issues can appear as:
 
 Multiple prototypes allow the classifier to represent several semantic patterns within the same intent.
 
-## Important limitation
+## Important Limitation
 
 The classifier confidence score is used as a **decision signal**, not as a calibrated probability.
 
@@ -313,7 +316,7 @@ Each interaction is represented using a 384-dimensional embedding.
 
 The retrieval system searches historical customer-support interactions for semantically similar examples.
 
-## Retrieval corpus
+## Retrieval Corpus
 
 The initial retrieval corpus contained:
 
@@ -327,9 +330,11 @@ For example:
 
 ```text
 Golden example:
+
 "My package is late."
 
 Historical retrieval corpus:
+
 "Yes, the same package is still delayed."
 ```
 
@@ -348,7 +353,7 @@ For each golden example:
 3. build the retrieval corpus from the remaining conversations
 4. evaluate retrieval against the excluded golden example
 
-## Leakage-safe index
+## Leakage-Safe Index
 
 | Metric                    |      Value |
 | ------------------------- | ---------: |
@@ -363,7 +368,7 @@ Implementation:
 src/retrieval/build_leakage_safe_index.py
 ```
 
-## Retrieval diagnostic
+## Retrieval Diagnostic
 
 On the 200-example golden set:
 
@@ -378,13 +383,13 @@ On the 200-example golden set:
 | P75        |            0.8275 |
 | P90        |            0.9013 |
 
-### Important interpretation
+### Important Interpretation
 
 **0.7644 is not retrieval accuracy.**
 
 It is the average cosine similarity between each golden customer message and its nearest historical interaction after conversation-level leakage prevention.
 
-A high similarity score does not guarantee that:
+A high similarity score does not prove that:
 
 * the retrieved answer is correct
 * the historical policy is still valid
@@ -409,7 +414,7 @@ The complete pipeline is:
 src/agent.py
 ```
 
-## Generation principles
+## Generation Principles
 
 The generator is instructed to:
 
@@ -460,14 +465,17 @@ A request is routed to a human when:
 * the intent is considered high-risk
 * evidence is insufficient for safe automation
 
-## High-risk intents
+## High-Risk Intents
 
 The current policy treats these intents conservatively:
 
 ```text
 billing_payment_charges
+
 account_access_security
+
 missing_misdelivered_package
+
 returns_refunds_replacements
 ```
 
@@ -477,7 +485,7 @@ Implementation:
 src/escalation/decide.py
 ```
 
-## Escalation evaluation
+## Escalation Evaluation
 
 | Metric                |              Result |
 | --------------------- | ------------------: |
@@ -488,7 +496,7 @@ src/escalation/decide.py
 
 The policy deliberately sacrifices automation coverage to reduce the risk of unsafe automatic handling.
 
-### Why not maximize automation?
+### Why Not Maximize Automation?
 
 For support systems, an incorrect automatic response can be more costly than an unnecessary human escalation.
 
@@ -497,7 +505,7 @@ The current policy therefore favors:
 ```text
 Weak evidence
      ↓
-HUMAN
+   HUMAN
 ```
 
 over:
@@ -516,7 +524,7 @@ A 20-example subset of human-labelled `AUTO-HANDLE` examples was evaluated end-t
 
 The sample was selected using seed `42`.
 
-## Automated safety checks
+## Automated Safety Checks
 
 | Check                   |           Result |
 | ----------------------- | ---------------: |
@@ -527,7 +535,7 @@ The sample was selected using seed `42`.
 | Empty responses         |         **0/20** |
 | Safety-clean responses  | **20/20 (100%)** |
 
-## Intent consistency
+## Intent Consistency
 
 The predicted intent matched the human-labelled intent for:
 
@@ -541,7 +549,7 @@ Three examples contained an intent mismatch.
 
 Generated responses were evaluated using Gemini with a 1–3 rubric.
 
-## Evaluation rubric
+## Evaluation Rubric
 
 ### Helpfulness
 
@@ -595,7 +603,7 @@ The main weakness was **helpfulness**: several responses were safe and grounded 
 
 To validate the LLM judge, the same 20 responses were independently rated by a human using the same rubric.
 
-## Agreement results
+## Agreement Results
 
 | Dimension    |    Exact Agreement | Cohen's κ |
 | ------------ | -----------------: | --------: |
@@ -610,7 +618,7 @@ The human rated helpfulness and correctness as `2`, while the LLM judge rated bo
 
 The response acknowledged the customer's suggestion but did not directly address the underlying pricing/payment concern, which explains the stricter human assessment.
 
-### Interpretation
+## Interpretation
 
 The agreement results provide evidence that the LLM judge is reasonably aligned with human assessment on this evaluation sample.
 
@@ -629,7 +637,7 @@ evaluation/human_generation_ratings_independent.json
 
 # 16. Top Failure Modes
 
-## 1. Safe but overly generic responses
+## 1. Safe but Overly Generic Responses
 
 Example:
 
@@ -659,13 +667,15 @@ Provide a safe next action
 
 ---
 
-## 2. Conversational messages are difficult to classify
+## 2. Conversational Messages Are Difficult to Classify
 
 Very short messages such as:
 
 ```text
 "Yes"
+
 "Thanks"
+
 "You're welcome"
 ```
 
@@ -692,7 +702,7 @@ or detect conversational turns before intent classification.
 
 ---
 
-## 3. Conservative escalation produces low automation coverage
+## 3. Conservative Escalation Produces Low Automation Coverage
 
 The current policy automatically handles only:
 
@@ -716,13 +726,15 @@ Collect a larger policy-labelled validation set and optimize thresholds using ex
 
 ```text
 Cost of unsafe automation
+
           vs
+
 Cost of unnecessary escalation
 ```
 
 ---
 
-## 4. Retrieval similarity does not equal answer correctness
+## 4. Retrieval Similarity Does Not Equal Answer Correctness
 
 The leakage-safe retrieval diagnostic has a mean Top-1 similarity of:
 
@@ -753,7 +765,7 @@ Response Generation
 
 ---
 
-## 5. Historical context can be insufficient
+## 5. Historical Context Can Be Insufficient
 
 Some requests require information that is unavailable in historical interactions.
 
@@ -829,10 +841,43 @@ The results should therefore be interpreted together rather than relying on a si
 
 # 19. Reproducibility
 
+## Quick Headline Evaluation — Under 15 Minutes
+
+The headline intent result can be reproduced without downloading the full Kaggle dataset or building the historical retrieval index.
+
+After installing the dependencies, run:
+
+```bash
+python src/intent/hybrid_classifier.py
+```
+
+This runs a **5-fold stratified cross-validation** over the committed 200-example golden set.
+
+Expected headline result:
+
+```text
+Accuracy: 0.5150
+Accuracy: 51.50%
+
+Macro-F1: 0.4251
+Weighted-F1: 0.5147
+```
+
+On the author's machine, the evaluation itself completed in approximately **20 seconds** after the embedding model was available.
+
+The classifier uses:
+
+* `all-MiniLM-L6-v2` sentence embeddings
+* up to 3 KMeans prototypes per intent
+* 70% similarity to labelled examples
+* 30% similarity to taxonomy descriptions
+* 5-fold stratified cross-validation
+* random seed `42`
+
 ## Requirements
 
 * Python 3.10+
-* Kaggle Customer Support on Twitter dataset
+* Kaggle Customer Support on Twitter dataset for the full-data pipeline
 * Gemini API key for generation and LLM-judge evaluation
 
 ## Setup
@@ -847,41 +892,32 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Create a `.env` file:
+Create a `.env` file for generation and LLM-judge evaluation:
 
 ```text
 GEMINI_API_KEY=your_api_key_here
 ```
 
-Never commit `.env`.
+The API key is never committed to the repository.
 
----
+## Full-Data Pipeline
 
-## Dataset preparation
+The complete pipeline starts from the Kaggle Customer Support on Twitter dataset and includes:
 
-Place the Kaggle dataset at:
+1. AmazonHelp brand analysis
+2. conversation construction
+3. interaction construction
+4. intent-sample creation
+5. intent taxonomy development
+6. golden-set labelling
+7. leakage-safe retrieval-index construction
+8. response generation
+9. escalation evaluation
+10. generation and LLM-judge evaluation
 
-```text
-data/raw/twcs/twcs.csv
-```
+The large raw dataset and generated retrieval indexes are intentionally excluded from Git because they are reproducible build artifacts rather than source files.
 
-Run:
-
-```bash
-python src/data/analyze_amazon.py
-python src/data/build_conversations.py
-python src/data/build_interactions.py
-```
-
-Create the intent sample:
-
-```bash
-python src/data/create_intent_sample.py
-```
-
----
-
-## Golden evaluation
+## Golden Evaluation
 
 Create the golden set:
 
@@ -901,9 +937,7 @@ Label escalation decisions:
 python src/escalation/label_escalation.py
 ```
 
----
-
-## Intent evaluation
+## Intent Evaluation
 
 Run the majority baseline:
 
@@ -911,15 +945,19 @@ Run the majority baseline:
 python evaluation/baseline_majority.py
 ```
 
-Run intent evaluation:
+Run the zero-shot taxonomy-description evaluation:
 
 ```bash
 python evaluation/evaluate_intent.py
 ```
 
----
+Run the main hybrid evaluation:
 
-## Leakage-safe retrieval
+```bash
+python src/intent/hybrid_classifier.py
+```
+
+## Leakage-Safe Retrieval
 
 Build the leakage-safe retrieval index:
 
@@ -933,17 +971,15 @@ The resulting index is stored under:
 data/processed/retrieval_index_safe/
 ```
 
----
-
-## Run the agent
+## Run the Agent
 
 ```bash
-python src/agent.py
+python src/agent.py "your customer message"
 ```
 
----
+The agent performs intent classification, historical retrieval, escalation decision, and response generation when the case qualifies for automatic handling.
 
-## Generation evaluation
+## Generation Evaluation
 
 Create the generation evaluation sample:
 
@@ -963,6 +999,8 @@ Evaluate generated responses:
 python evaluation/evaluate_generation.py
 ```
 
+## LLM-as-a-Judge Evaluation
+
 Run the LLM judge:
 
 ```bash
@@ -981,6 +1019,24 @@ Compare human and LLM ratings:
 python evaluation/compare_human_llm.py
 ```
 
+The LLM judge evaluates helpfulness, groundedness, correctness, and safety on a 1–3 scale. Independent human ratings are used to measure agreement with the judge.
+
+## Automated Tests
+
+The repository includes a lightweight test suite covering the escalation policy and sensitive-information sanitization.
+
+Run:
+
+```bash
+pytest -q
+```
+
+Expected result:
+
+```text
+6 passed
+```
+
 ---
 
 # 20. Project Structure
@@ -996,12 +1052,20 @@ hiver-ai-support-agent/
 │
 ├── evaluation/
 │   ├── baseline_majority.py
+│   ├── baseline_tfidf.py
 │   ├── compare_human_llm.py
 │   ├── collect_human_ratings.py
 │   ├── create_generation_sample.py
+│   ├── evaluate_escalation.py
 │   ├── evaluate_generation.py
 │   ├── evaluate_intent.py
+│   ├── evaluate_retrieval.py
+│   ├── evaluate_retrieval_safe.py
+│   ├── evaluate_supervised_intent.py
 │   ├── llm_judge.py
+│   ├── run_generation_eval.py
+│   ├── score_escalation.py
+│   ├── summarize_human_ratings.py
 │   ├── summarize_llm_judge.py
 │   └── human_generation_ratings_independent.json
 │
@@ -1010,6 +1074,8 @@ hiver-ai-support-agent/
 │   │
 │   ├── data/
 │   │   ├── analyze_amazon.py
+│   │   ├── analyze_brands.py
+│   │   ├── analyze_conversations.py
 │   │   ├── build_conversations.py
 │   │   ├── build_interactions.py
 │   │   └── create_intent_sample.py
@@ -1020,10 +1086,14 @@ hiver-ai-support-agent/
 │   │   ├── create_golden_set.py
 │   │   ├── label_golden.py
 │   │   ├── multi_prototype.py
-│   │   └── hybrid.py
+│   │   ├── multi_prototype_classifier.py
+│   │   ├── hybrid.py
+│   │   └── hybrid_classifier.py
 │   │
 │   ├── retrieval/
-│   │   └── build_leakage_safe_index.py
+│   │   ├── build_index.py
+│   │   ├── build_leakage_safe_index.py
+│   │   └── test_retrieval.py
 │   │
 │   ├── generation/
 │   │   └── generate_reply.py
@@ -1033,9 +1103,12 @@ hiver-ai-support-agent/
 │       └── label_escalation.py
 │
 ├── tests/
+│   └── test_safety_and_escalation.py
+│
 ├── DECISIONS.md
 ├── README.md
 ├── REPORT.md
+├── pytest.ini
 ├── requirements.txt
 └── .gitignore
 ```
@@ -1079,7 +1152,7 @@ The source dataset consists of historical Twitter interactions and may not repre
 
 The taxonomy is manually consolidated and does not explicitly model conversational messages such as acknowledgements, thanks, or positive feedback.
 
-### Golden set
+### Golden Set
 
 The evaluation set contains 200 examples and is not perfectly balanced across intents.
 
@@ -1091,15 +1164,15 @@ Semantic similarity does not guarantee that the retrieved support response is co
 
 The end-to-end generation evaluation contains only 20 examples.
 
-### Judge validation
+### Judge Validation
 
 Human-vs-LLM judge agreement was measured on only 20 examples.
 
-### Escalation policy
+### Escalation Policy
 
 Escalation labels represent a designed safety policy rather than objective business ground truth.
 
-### Live systems
+### Live Systems
 
 The prototype has no access to live Amazon accounts, orders, payments, delivery systems, or current policies.
 
@@ -1107,7 +1180,7 @@ The prototype has no access to live Amazon accounts, orders, payments, delivery 
 
 # 23. What I Would Improve With One More Week
 
-## 1. Expand the golden set
+## 1. Expand the Golden Set
 
 Increase the evaluation set from 200 to approximately 1,000 examples with better class balance.
 
@@ -1125,7 +1198,7 @@ This would reduce forced classification of conversational messages.
 
 ---
 
-## 2. Calibrate intent confidence
+## 2. Calibrate Intent Confidence
 
 Instead of using raw similarity and intent margins, create a held-out validation set and calibrate confidence.
 
@@ -1137,7 +1210,7 @@ Potential approaches:
 
 ---
 
-## 3. Improve retrieval
+## 3. Improve Retrieval
 
 Introduce a reranking stage:
 
@@ -1155,7 +1228,7 @@ Response Generation
 
 ---
 
-## 4. Improve response usefulness
+## 4. Improve Response Usefulness
 
 Use structured response generation:
 
@@ -1173,13 +1246,15 @@ This should reduce generic responses while preserving the current safety constra
 
 ---
 
-## 5. Optimize escalation using business costs
+## 5. Optimize Escalation Using Business Costs
 
 Instead of optimizing only classification accuracy, define explicit costs:
 
 ```text
 False AUTO-HANDLE
+
         vs
+
 Unnecessary HUMAN escalation
 ```
 
@@ -1187,7 +1262,7 @@ Then tune escalation thresholds against those costs.
 
 ---
 
-## 6. Expand judge validation
+## 6. Expand Judge Validation
 
 Increase human-vs-LLM validation to 100+ examples covering:
 
@@ -1239,7 +1314,7 @@ LLM-as-a-Judge
 Human Judge Validation
 ```
 
-### Final results
+## Final Results
 
 | Metric                        |            Result |
 | ----------------------------- | ----------------: |
